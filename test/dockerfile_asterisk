@@ -1,0 +1,17 @@
+FROM debian:latest
+
+RUN apt-get update && apt-get install -y build-essential wget libncurses5-dev libssl-dev libxml2-dev libsqlite3-dev uuid-dev
+
+WORKDIR /tmp
+RUN wget http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-18-current.tar.gz
+RUN tar xvf asterisk-18-current.tar.gz
+WORKDIR /tmp/asterisk-18*/
+RUN ./configure
+RUN make
+RUN make install
+RUN make samples
+
+#Тут установка SIP софтфона 
+RUN apt-get install -y linphone
+
+CMD ["asterisk", "-f"]

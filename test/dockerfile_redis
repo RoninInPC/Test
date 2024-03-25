@@ -1,0 +1,10 @@
+FROM debian:latest
+
+RUN apt-get update && apt-get install -y wget gnupg
+
+RUN echo "deb http://httpredir.debian.org/debian jessie-backports main" >> /etc/apt/sources.list
+RUN apt-get update
+
+RUN apt-get install -y redis-server
+
+CMD ["redis-server"]

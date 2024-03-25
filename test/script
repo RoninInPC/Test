@@ -1,0 +1,39 @@
+build_project() {
+    repo_name=$1
+    repo_login=$2
+    repo_password=$3
+
+    docker build -t test_asterisk ./dockerfile_asterisk
+    docker login -u $repo_login -p $repo_password
+    docker tag test_asterisk $repo_name/test_asterisk
+    docker push $repo_name/test_asterisk
+
+    docker build -t test_mysql ./dockerfile_mysql
+    docker login -u $repo_login -p $repo_password
+    docker tag test_mysql $repo_name/test_mysql
+    docker push $repo_name/test_mysql
+    
+    docker build -t test_redis ./dockerfile_redis
+    docker login -u $repo_login -p $repo_password
+    docker tag test_redis $repo_name/test_redis
+    docker push $repo_name/test_redis
+
+    docker build -t test_application ./dockerfile_application
+    docker login -u $repo_login -p $repo_password
+    docker tag test_application $repo_name/test_application
+    docker push $repo_name/test_application
+    
+    
+    
+    start asterisk.service
+    start mysql.service
+    start redis.service
+    start application.service
+    
+    docker rmi test_asterisk
+    docker rmi test_mysql
+    docker rmi test_redis
+    docker rmi test_application
+}
+
+build_project $1 $2 $3

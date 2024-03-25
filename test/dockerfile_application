@@ -1,0 +1,12 @@
+FROM node:14
+
+WORKDIR /app
+
+COPY application.js /app/application.js
+
+
+RUN npm redis
+
+RUN npm asterisk-ami-client
+
+CMD ["node", "app.js"]
